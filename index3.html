@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WebAR Gladiador - Auto AR</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <style>
+        model-viewer {
+            width: 100%;
+            height: 400px;
+            background-color: #f0f0f0;
+            --poster-color: transparent;
+        }
+        
+        .attribution {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            model-viewer {
+                height: 300px;
+            }
+        }
+
+        /* Hide the default AR button */
+        model-viewer::part(ar-button) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div id="card">
+            <model-viewer 
+                src="./assets/gladiador.glb"
+                ios-src="./assets/gladiador.usdz"
+                alt="A 3D model of a Gladiador"
+                shadow-intensity="1"
+                camera-controls
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                ar-placement="floor"
+                ar-scale="fixed"
+                loading="eager"
+                reveal="auto">
+            </model-viewer>
+            
+            <section class="attribution">
+                <h1>Gladiador</h1>
+                <p>By <a href="https://cdn.glitch.global/addb5fe7-d705-44fd-a613-f856c9627bf6/donut2.glb" target="_blank" rel="noopener">SketchFab</a></p>
+                <p>Demo by <a href="https://www.antdevelopers.com" target="_blank" rel="noopener">ANT Developers</a></p>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Modern browsers -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
+    <!-- Legacy browsers -->
+    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modelViewer = document.querySelector('model-viewer');
+            
+            // Function to activate AR automatically
+            async function activateAR() {
+                try {
+                    // Check if AR is supported
+                    if (modelViewer.canActivateAR) {
+                        // Small delay to ensure everything is loaded
+                        setTimeout(() => {
+                            modelViewer.activateAR();
+                        }, 1000);
+                    } else {
+                        console.log('AR not supported on this device');
+                    }
+                } catch (error) {
+                    console.error('Error activating AR:', error);
+                }
+            }
+
+            // Start AR when page loads
+            activateAR();
+
+            // Error handling
+            modelViewer.addEventListener('error', function(error) {
+                console.error('Error loading 3D model:', error);
+            });
+
+            // AR Status tracking
+            modelViewer.addEventListener('ar-status', (event) => {
+                console.log('AR Status:', event.detail);
+            });
+        });
+    </script>
+</body>
+</html>
