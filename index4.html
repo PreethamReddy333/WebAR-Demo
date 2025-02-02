@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WebAR Gladiador</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <style>
+        /* Hide the AR button */
+        model-viewer::part(ar-button) {
+            display: none;
+        }
+        
+        #card {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        model-viewer {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .attribution {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+  </head> 
+<body>
+  <div class="row">
+    <div id="card">
+      <model-viewer 
+          src="./assets/gladiador.glb"
+          ios-src="./assets/gladiador.usdz"
+          alt="A 3D model of an Gladiador"
+          shadow-intensity="1"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-scale="fixed"
+          interaction-prompt="none"
+          camera-controls="false"
+          ar-placement="floor">
+      </model-viewer>
+      <section class="attribution">
+        <span>
+          <h1>Gladiador</h1>
+          <span>By <a href="https://sketchfab.com/3d-models/gladiador-874fc7e11d674f51a4dc2082d29c9b9a" target="_blank">SketchFab</a></span>
+          <br>
+          <span>Demo by <a href="https://www.antdevelopers.com" target="_blank">ANT Developers</a></span>
+        </span>
+        <a class="cc" href="https://creativecommons.org/licenses/by/2.0/" target="_blank">
+          <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg">
+          <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg">
+        </a>
+      </section>  
+    </div>
+  </div>
+
+  <!-- Modern browsers -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  
+  <!-- Legacy browsers -->
+  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modelViewer = document.querySelector('model-viewer');
+        
+        // Function to start AR immediately
+        async function startAR() {
+            try {
+                if (modelViewer.canActivateAR) {
+                    await modelViewer.activateAR();
+                }
+            } catch (error) {
+                console.error('Error starting AR:', error);
+            }
+        }
+
+        // Start AR as soon as possible
+        startAR();
+    });
+  </script>
+</body>
+</html>
